@@ -1,0 +1,45 @@
+[project]
+name = "normkompass-mcp"
+version = "0.1.0"
+description = "MCP server that exposes normkompass (cited search over German federal law) as tools for an AI agent"
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
+requires-python = ">=3.12"
+dependencies = [
+    "mcp==2.3.0",
+    "httpx==0.28.1",
+    "pydantic>=2.12,<3",
+]
+
+[project.scripts]
+normkompass-mcp = "normkompass_mcp.__main__:main"
+
+[dependency-groups]
+dev = [
+    "pytest>=9,<10",
+    "ruff>=0.15,<1",
+    "mypy>=1.20,<2",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/normkompass_mcp"]
+
+[tool.ruff]
+line-length = 100
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "SIM", "ASYNC", "RUF"]
+
+[tool.mypy]
+strict = true
+files = ["src", "tests"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra"
