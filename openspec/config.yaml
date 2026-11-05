@@ -1,0 +1,11 @@
+schema: spec-driven
+
+context: |
+  normkompass-mcp is a small MCP (Model Context Protocol) server that exposes the
+  search and cited answers of normkompass (a TypeScript RAG service over German
+  federal law, https://github.com/sotream/normkompass) as tools for an AI agent.
+  It is a thin client: it calls the normkompass HTTP API and adds no retrieval of
+  its own. It is a reference implementation, not a finished product and not legal advice.
+  Stack: Python 3.12+, the official MCP Python SDK, pytest, ruff, mypy, GitHub Actions.
+  All repository artifacts (specs, ADRs, code, commits) are written in English.
+  Specs describe observable behavior (requirements and scenarios), not code.
