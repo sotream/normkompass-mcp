@@ -34,6 +34,20 @@ async def test_lists_exactly_two_tools_with_descriptions(stub: StubApi) -> None:
 
 
 @pytest.mark.anyio
+async def test_both_tools_are_annotated_read_only_non_destructive_and_idempotent(
+    stub: StubApi,
+) -> None:
+    async with connect(stub) as client:
+        tools = (await client.list_tools()).tools
+    for tool in tools:
+        assert tool.annotations is not None
+        assert tool.annotations.read_only_hint is True
+        assert tool.annotations.destructive_hint is False
+        assert tool.annotations.idempotent_hint is True
+        assert tool.annotations.open_world_hint is False
+
+
+@pytest.mark.anyio
 async def test_starts_and_lists_tools_when_the_api_is_down() -> None:
     def down(_request: httpx.Request) -> httpx.Response:
         raise httpx.ConnectError("refused")
