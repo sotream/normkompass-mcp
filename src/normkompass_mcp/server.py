@@ -2,11 +2,21 @@
 
 from mcp.server.mcpserver import MCPServer
 from mcp.server.mcpserver.exceptions import ToolError
+from mcp.types import ToolAnnotations
 from pydantic import BaseModel
 
 from .client import ClientError, NormkompassClient
 from .config import DEFAULT_LIMIT, MAX_LIMIT, MAX_QUESTION_LENGTH, MIN_LIMIT, api_url
 from .models import Citation, Passage
+
+# Hints for clients, not a security control: both tools only read, repeat with the same result, and
+# contact one fixed service (the configured normkompass API).
+ANNOTATIONS = ToolAnnotations(
+    read_only_hint=True,
+    destructive_hint=False,
+    idempotent_hint=True,
+    open_world_hint=False,
+)
 
 NOTE = (
     "German federal law (UStG, UStDV, AO, BDSG, DDG). Not legal advice. "
@@ -64,7 +74,7 @@ def build_server(client: NormkompassClient | None = None) -> MCPServer:
         ),
     )
 
-    @server.tool(name="search_law", description=SEARCH_DESCRIPTION)
+    @server.tool(name="search_law", description=SEARCH_DESCRIPTION, annotations=ANNOTATIONS)
     async def search_law(question: str, limit: int = DEFAULT_LIMIT) -> SearchResult:
         text = _check_question(question)
         if limit < MIN_LIMIT or limit > MAX_LIMIT:
@@ -74,7 +84,7 @@ def build_server(client: NormkompassClient | None = None) -> MCPServer:
         except ClientError as error:
             raise ToolError(str(error)) from error
 
-    @server.tool(name="ask_law", description=ASK_DESCRIPTION)
+    @server.tool(name="ask_law", description=ASK_DESCRIPTION, annotations=ANNOTATIONS)
     async def ask_law(question: str) -> AskResult:
         text = _check_question(question)
         try:

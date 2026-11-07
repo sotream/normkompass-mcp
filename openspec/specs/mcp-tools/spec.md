@@ -48,3 +48,10 @@ The server SHALL report an unreachable API, a timeout, an unexpected response, a
 #### Scenario: API unreachable
 - **WHEN** the API cannot be reached
 - **THEN** the tool error names the configured address and says the API is not reachable
+
+### Requirement: Truthful tool annotations
+Both tools SHALL carry the MCP tool annotations that describe them as read-only, not destructive, and idempotent, and SHALL NOT claim any annotation that is not true; the documentation SHALL describe annotations as hints for clients and not as a security control.
+
+#### Scenario: Client lists tools
+- **WHEN** an MCP client lists the tools
+- **THEN** each tool shows the read-only, non-destructive and idempotent annotations

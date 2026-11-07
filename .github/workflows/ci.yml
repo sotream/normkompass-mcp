@@ -22,6 +22,7 @@ jobs:
       - run: uv run ruff check .
       - run: uv run mypy
       - run: uv run pytest
+      - run: docker build -t normkompass-mcp:ci .
       - run: npx --yes @fission-ai/openspec@1.16.0 validate --all --strict --no-interactive
         env:
           OPENSPEC_TELEMETRY: '0'
