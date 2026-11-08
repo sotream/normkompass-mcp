@@ -155,7 +155,7 @@ separate pull request before any code.
 ## Limits
 
 - Answer quality is that of normkompass and its model; nothing about quality is measured here. See the
-  normkompass README ("Honest limits") for what is known, in particular that Claude has not been measured there.
+  normkompass README ("Limitations") for what is known, in particular that Claude has not been measured there.
 - No TLS, no per-user tokens, no rate limiting, no caching, and no public hosting (see "HTTP transport").
 - One corpus (five German federal laws, a snapshot with the Stand shown per result). No promise that the law
   shown is current or complete.
