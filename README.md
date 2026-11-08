@@ -84,6 +84,9 @@ page; please open an issue.
 
 Both tools are annotated as read-only, not destructive and idempotent, and as contacting one fixed service (the
 configured normkompass API). These are hints for clients, as the MCP specification says, not a security control.
+"Read-only" describes the tool's effect on the law corpus: neither tool changes anything in normkompass. `ask_law`
+is not free of side effects outside it: the normkompass API sends the question and the retrieved passages to the
+answer model it is configured with, which may be a hosted service, and the same question can get a different answer.
 
 ## HTTP transport
 
@@ -132,6 +135,11 @@ The image runs as a non-root user and contains no secret; the API address and th
 reach. Binding to `0.0.0.0` inside the container is safe only because the token is mandatory and the port is
 published to `127.0.0.1`.
 
+The image is built in CI (`docker build -t normkompass-mcp:ci .` in `.github/workflows/ci.yml`) to check that the
+Dockerfile works. It is not pushed to any registry and no image is published; build it yourself with the command
+above. The bearer token is a single shared secret that is optional on a loopback address, and the transport has no
+TLS of its own.
+
 ## Development
 
 ```sh
@@ -147,7 +155,7 @@ separate pull request before any code.
 ## Limits
 
 - Answer quality is that of normkompass and its model; nothing about quality is measured here. See the
-  normkompass README ("Honest limits") for what is known, in particular that Claude has not been measured there.
+  normkompass README ("Limitations") for what is known, in particular that Claude has not been measured there.
 - No TLS, no per-user tokens, no rate limiting, no caching, and no public hosting (see "HTTP transport").
 - One corpus (five German federal laws, a snapshot with the Stand shown per result). No promise that the law
   shown is current or complete.
